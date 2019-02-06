@@ -1,4 +1,4 @@
-// PP_0.cpp: определяет точку входа для консольного приложения.
+// PP_0.cpp: РѕРїСЂРµРґРµР»СЏРµС‚ С‚РѕС‡РєСѓ РІС…РѕРґР° РґР»СЏ РєРѕРЅСЃРѕР»СЊРЅРѕРіРѕ РїСЂРёР»РѕР¶РµРЅРёСЏ.
 //
 #include <locale>//setlocale
 #include "stdafx.h"
@@ -7,12 +7,18 @@
 #include <string>
 #include <malloc.h>
 #include <math.h> 
-
+#include <ctime>
+/*
+todo: РґРѕР±Р°РІРёС‚СЊ РґРёРЅР°РјРёС‡РµСЃРєСѓСЋ РїР°РјСЏС‚СЊ
+	СЂР°Р±РѕС‡РёР№ С‚Р°Р№РјРµСЂ
+	РїРµСЂРµРІРµСЃС‚Рё РІСЃРµ С‚РёРїС‹ РЅР° double
+	РґРѕР±Р°РІРёС‚СЊ СЌС‚Р°Р»РѕРЅРЅС‹Рµ Р·РЅР°С‡РµРЅРёСЏ
+*/
 
 
 using namespace std;
 
-int IInsert(int MaxNum = INT_MAX, string input = "") {//ввод числа типа int от 1 до MaxNum
+int IInsert(int MaxNum = INT_MAX, string input = "") {//РІРІРѕРґ С‡РёСЃР»Р° С‚РёРїР° int РѕС‚ 1 РґРѕ MaxNum
 	string s;
 	bool key = false;
 	int res;
@@ -28,20 +34,20 @@ int IInsert(int MaxNum = INT_MAX, string input = "") {//ввод числа типа int от 1
 				}
 				else
 				{
-					cout << "Ошибка!Число вне диапазона" << endl;
+					cout << "РћС€РёР±РєР°!Р§РёСЃР»Рѕ РІРЅРµ РґРёР°РїР°Р·РѕРЅР°" << endl;
 					return  -1;
 				}
 			}
 			else {
-				cout << "Ошибка ввода" << endl;
+				cout << "РћС€РёР±РєР° РІРІРѕРґР°" << endl;
 				return -1;
 			}
 		}
-		catch (const invalid_argument&) { cout << "Ошибка!Введено не число" << endl; 
+		catch (const invalid_argument&) { cout << "РћС€РёР±РєР°!Р’РІРµРґРµРЅРѕ РЅРµ С‡РёСЃР»Рѕ" << endl; 
 		return -1;
 		}
 		catch (const out_of_range&) {
-			cout << "Число вне диапазона integer" << endl;
+			cout << "Р§РёСЃР»Рѕ РІРЅРµ РґРёР°РїР°Р·РѕРЅР° integer" << endl;
 			return -1;
 		}
 		
@@ -68,16 +74,16 @@ int IInsert(int MaxNum = INT_MAX, string input = "") {//ввод числа типа int от 1
 				}
 				else
 				{
-					cout << "Вне диапазона количества элементов" << endl;
+					cout << "Р’РЅРµ РґРёР°РїР°Р·РѕРЅР° РєРѕР»РёС‡РµСЃС‚РІР° СЌР»РµРјРµРЅС‚РѕРІ" << endl;
 				}
 			}
 			else {
-				cout << "Ошибка ввода" << endl;
+				cout << "РћС€РёР±РєР° РІРІРѕРґР°" << endl;
 			}
 		}
-		catch (const invalid_argument&) { cout << "Введено не число" << endl; cout << "Попробуйте снова" << endl; }
+		catch (const invalid_argument&) { cout << "Р’РІРµРґРµРЅРѕ РЅРµ С‡РёСЃР»Рѕ" << endl; cout << "РџРѕРїСЂРѕР±СѓР№С‚Рµ СЃРЅРѕРІР°" << endl; }
 		catch (const out_of_range&) {
-			cout << "Число вне диапазона integer" << endl; cout << "Попробуйте снова" << endl;
+			cout << "Р§РёСЃР»Рѕ РІРЅРµ РґРёР°РїР°Р·РѕРЅР° integer" << endl; cout << "РџРѕРїСЂРѕР±СѓР№С‚Рµ СЃРЅРѕРІР°" << endl;
 		}
 	} while (key == false);
 	return res;
@@ -89,7 +95,7 @@ double DInsert() {
 	bool key = false;
 	double res;
 	system("cls");
-	cout << "Введите число: ";
+	cout << "Р’РІРµРґРёС‚Рµ С‡РёСЃР»Рѕ: ";
 	/*getline(cin, s);*/
 	do {
 
@@ -112,130 +118,138 @@ double DInsert() {
 					}
 					else
 					{
-						cout << "Число должно быть целым" << endl;
+						cout << "Р§РёСЃР»Рѕ РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ С†РµР»С‹Рј" << endl;
 					}
 				}
 				else {
-					cout << "Используются только неотрицательные числа" << endl;
+					cout << "РСЃРїРѕР»СЊР·СѓСЋС‚СЃСЏ С‚РѕР»СЊРєРѕ РЅРµРѕС‚СЂРёС†Р°С‚РµР»СЊРЅС‹Рµ С‡РёСЃР»Р°" << endl;
 				}
 			}
 			else {
-				cout << "Ошибка ввода" << endl;
+				cout << "РћС€РёР±РєР° РІРІРѕРґР°" << endl;
 			}
 		}
-		catch (const invalid_argument&) { cout << "Введено не число" << endl; cout << "Попробуйте снова" << endl; }
+		catch (const invalid_argument&) { cout << "Р’РІРµРґРµРЅРѕ РЅРµ С‡РёСЃР»Рѕ" << endl; cout << "РџРѕРїСЂРѕР±СѓР№С‚Рµ СЃРЅРѕРІР°" << endl; }
 		catch (const out_of_range&) {
-			cout << "Число вне диапазона double" << endl; cout << "Попробуйте снова" << endl;
+			cout << "Р§РёСЃР»Рѕ РІРЅРµ РґРёР°РїР°Р·РѕРЅР° double" << endl; cout << "РџРѕРїСЂРѕР±СѓР№С‚Рµ СЃРЅРѕРІР°" << endl;
 		}
 	} while (key != true);
 	return res;
 }
 
 
-int gcd(int x, int y)//функция сравнивает 2 числа, возвращает 1 если числа взимнопростые.
+int gcd(int x, int y)//С„СѓРЅРєС†РёСЏ СЃСЂР°РІРЅРёРІР°РµС‚ 2 С‡РёСЃР»Р°, РІРѕР·РІСЂР°С‰Р°РµС‚ 1 РµСЃР»Рё С‡РёСЃР»Р° РІР·РёРјРЅРѕРїСЂРѕСЃС‚С‹Рµ.
 {
 	return y ? gcd(y, x%y) : x;
 }
-int* ReadBas() {//функция счтывает числа базиса, вернет массив элементов или NULL
-	cout << "Введите базис числа, разделяя числа пробелом" << endl;
+int* ReadBas() {//С„СѓРЅРєС†РёСЏ СЃС‡С‚С‹РІР°РµС‚ С‡РёСЃР»Р° Р±Р°Р·РёСЃР°, РІРµСЂРЅРµС‚ РјР°СЃСЃРёРІ СЌР»РµРјРµРЅС‚РѕРІ РёР»Рё NULL
+	cout << "Р’РІРµРґРёС‚Рµ Р±Р°Р·РёСЃ С‡РёСЃР»Р°, СЂР°Р·РґРµР»СЏСЏ С‡РёСЃР»Р° РїСЂРѕР±РµР»РѕРј" << endl;
 	string SBasNums = "";
 	getline(cin, SBasNums);
 	int z;
-	while ((z = SBasNums.find("  ")) != std::string::npos)//убираем лишние разделители
+	while ((z = SBasNums.find("  ")) != std::string::npos)//СѓР±РёСЂР°РµРј Р»РёС€РЅРёРµ СЂР°Р·РґРµР»РёС‚РµР»Рё
 		SBasNums.erase(z, 1);
-	if (SBasNums[0] == ' ')//убираем пробелы в 1 и последнем символе строки если есть
-		SBasNums.erase(0, 1);
-	if (SBasNums[SBasNums.length() - 1] == ' ')
-		SBasNums.erase(SBasNums.length() - 1, 1);//теперь все параметры гаранитрованно разделены 1 пробелом
-	short SpaceCount = 0;
-	for (int i = 0;i < SBasNums.length() - 1;i++) {
-		if (SBasNums[i] == ' ')
-			SpaceCount++;
-	}
-	string *SArr1Basis;//массив с элементами типа string, содержащий значения базиса
-	SArr1Basis = new string[SpaceCount + 1];
-	for (int i = 0;i < SpaceCount+1;i++) {
-		if (i != SpaceCount) {
-			int k = SBasNums.find(' ');
-			SArr1Basis[i] = SBasNums.substr(0, k);
-			SBasNums.erase(0, k + 1);
-		}
-		else {
-			SArr1Basis[SpaceCount] = SBasNums;//вот тут осторожно. как передаётся?
-		}
-	}//     1    2 3456 7 8 910    теcт
-	int NumElements = SpaceCount + 1;
-	int *IArr1Basis;//массив для элементов базиса
-	IArr1Basis = new int[NumElements];
-	for (int i = 0; i < NumElements;i++) {
-		IArr1Basis[i] = IInsert(INT_MAX, SArr1Basis[i]);//парсим
-	}
-	bool BasisCreated = true;
+	if (SBasNums != "") {
+		if (SBasNums[0] == ' ')//СѓР±РёСЂР°РµРј РїСЂРѕР±РµР»С‹ РІ 1 Рё РїРѕСЃР»РµРґРЅРµРј СЃРёРјРІРѕР»Рµ СЃС‚СЂРѕРєРё РµСЃР»Рё РµСЃС‚СЊ
+			SBasNums.erase(0, 1);
+		if (SBasNums[SBasNums.length() - 1] == ' ')
+			SBasNums.erase(SBasNums.length() - 1, 1);//С‚РµРїРµСЂСЊ РІСЃРµ РїР°СЂР°РјРµС‚СЂС‹ РіР°СЂР°РЅРёС‚СЂРѕРІР°РЅРЅРѕ СЂР°Р·РґРµР»РµРЅС‹ 1 РїСЂРѕР±РµР»РѕРј
 
-	for (int i = 0; i < NumElements;i++)
-	{
-		if (IArr1Basis[i] == -1) {//проверяем все ли элементы были корректны
-			cout << "Ошибка в записи: " << SArr1Basis[i] << endl;
-			BasisCreated = false;
+		short SpaceCount = 0;
+		int wtf = SBasNums.length() - 1;
+		for (int i = 0;i < wtf;i++) {
+			if (SBasNums[i] == ' ')
+				SpaceCount++;
 		}
-	}
-		if (BasisCreated == true) {//базис описан корректно
-			for (int i = 0; i < NumElements;i++) {//все элементы базиса также должны быть попарно взаимно просты.
+		string *SArr1Basis;//РјР°СЃСЃРёРІ СЃ СЌР»РµРјРµРЅС‚Р°РјРё С‚РёРїР° string, СЃРѕРґРµСЂР¶Р°С‰РёР№ Р·РЅР°С‡РµРЅРёСЏ Р±Р°Р·РёСЃР°
+		SArr1Basis = new string[SpaceCount + 1];
+		for (int i = 0;i < SpaceCount + 1;i++) {
+			if (i != SpaceCount) {
+				int k = SBasNums.find(' ');
+				SArr1Basis[i] = SBasNums.substr(0, k);
+				SBasNums.erase(0, k + 1);
+			}
+			else {
+				SArr1Basis[SpaceCount] = SBasNums;//РІРѕС‚ С‚СѓС‚ РѕСЃС‚РѕСЂРѕР¶РЅРѕ. РєР°Рє РїРµСЂРµРґР°С‘С‚СЃСЏ?
+			}
+		}//     1    2 3456 7 8 910    С‚РµcС‚
+		int NumElements = SpaceCount + 1;
+		int *IArr1Basis;//РјР°СЃСЃРёРІ РґР»СЏ СЌР»РµРјРµРЅС‚РѕРІ Р±Р°Р·РёСЃР°
+		IArr1Basis = new int[NumElements];
+		for (int i = 0; i < NumElements;i++) {
+			IArr1Basis[i] = IInsert(INT_MAX, SArr1Basis[i]);//РїР°СЂСЃРёРј
+		}
+		bool BasisCreated = true;
+
+		for (int i = 0; i < NumElements;i++)
+		{
+			if (IArr1Basis[i] == -1) {//РїСЂРѕРІРµСЂСЏРµРј РІСЃРµ Р»Рё СЌР»РµРјРµРЅС‚С‹ Р±С‹Р»Рё РєРѕСЂСЂРµРєС‚РЅС‹
+				cout << "РћС€РёР±РєР° РІ Р·Р°РїРёСЃРё: " << SArr1Basis[i] << endl;
+				BasisCreated = false;
+			}
+		}
+		if (BasisCreated == true) {//Р±Р°Р·РёСЃ РѕРїРёСЃР°РЅ РєРѕСЂСЂРµРєС‚РЅРѕ
+			for (int i = 0; i < NumElements;i++) {//РІСЃРµ СЌР»РµРјРµРЅС‚С‹ Р±Р°Р·РёСЃР° С‚Р°РєР¶Рµ РґРѕР»Р¶РЅС‹ Р±С‹С‚СЊ РїРѕРїР°СЂРЅРѕ РІР·Р°РёРјРЅРѕ РїСЂРѕСЃС‚С‹.
 				for (int j = i; j < NumElements;j++) {
 					if (i == j) {
-						//сравнивать с собой не нужно, но если добавить в цикле +1 то можно и за границы массива уйти
+						//СЃСЂР°РІРЅРёРІР°С‚СЊ СЃ СЃРѕР±РѕР№ РЅРµ РЅСѓР¶РЅРѕ, РЅРѕ РµСЃР»Рё РґРѕР±Р°РІРёС‚СЊ РІ С†РёРєР»Рµ +1 С‚Рѕ РјРѕР¶РЅРѕ Рё Р·Р° РіСЂР°РЅРёС†С‹ РјР°СЃСЃРёРІР° СѓР№С‚Рё
 					}
 					else {
 						if (gcd(IArr1Basis[i], IArr1Basis[j]) != 1) {
 							BasisCreated = false;
-							cout << "Числа " << IArr1Basis[i] << " и " << IArr1Basis[j] << " не являются взаимнопростыми" << endl;
+							cout << "Р§РёСЃР»Р° " << IArr1Basis[i] << " Рё " << IArr1Basis[j] << " РЅРµ СЏРІР»СЏСЋС‚СЃСЏ РІР·Р°РёРјРЅРѕРїСЂРѕСЃС‚С‹РјРё" << endl;
 						}
 					}
 				}
 			}
-			if (BasisCreated) {//все числа оказались взаимно простыми
+			if (BasisCreated) {//РІСЃРµ С‡РёСЃР»Р° РѕРєР°Р·Р°Р»РёСЃСЊ РІР·Р°РёРјРЅРѕ РїСЂРѕСЃС‚С‹РјРё
 				return IArr1Basis;
 			}
-			else {//найдены не взаимно простые числа
+			else {//РЅР°Р№РґРµРЅС‹ РЅРµ РІР·Р°РёРјРЅРѕ РїСЂРѕСЃС‚С‹Рµ С‡РёСЃР»Р°
 				return NULL;
 			}
 		}
-		else {//некорректно описан базис
+		else {//РЅРµРєРѕСЂСЂРµРєС‚РЅРѕ РѕРїРёСЃР°РЅ Р±Р°Р·РёСЃ
 			return NULL;
 		}
 	}
+	else {//РµСЃР»Рё РІРІРµРґРµРЅР° РїСѓСЃС‚Р°СЏ СЃС‚СЂРѕРєР° SBasNums ==""
+		cout << "Р’РІРµРґРµРЅР° РїСѓСЃС‚Р°СЏ СЃС‚СЂРѕРєР°" << endl;
+		return NULL;
+	}
+}
 
-bool CmpParamsBasis(int *Basis, double Num1, double Num2) {
+bool CmpParamsBasis(int *Basis, int Num1, int Num2) {
 	double MaxNums;
-	int n = _msize(Basis) / sizeof(int);//количество элементов массива
+	int n = _msize(Basis) / sizeof(int);//РєРѕР»РёС‡РµСЃС‚РІРѕ СЌР»РµРјРµРЅС‚РѕРІ РјР°СЃСЃРёРІР°
 	MaxNums = 1;
 	for (int i = 0; i < n;i++) {
 		MaxNums *= Basis[i];
 	}
 	MaxNums--;
-	cout << "Диапазон значений базиса: [0; " << MaxNums << "]" << endl;
+	cout << "Р”РёР°РїР°Р·РѕРЅ Р·РЅР°С‡РµРЅРёР№ Р±Р°Р·РёСЃР°: [0; " << MaxNums << "]" << endl;
 	if ((Num1 != NULL) && (Num2 != NULL)) {
 		if ((Num1 <= MaxNums) && (Num2 <= MaxNums)) {
-			cout << "Параметры \n" << Num1 << "\n" << Num2 << "\n удовлетворяют заданному базису" << endl;
+			cout << "РџР°СЂР°РјРµС‚СЂС‹ \n" << Num1 << "\n" << Num2 << "\n СѓРґРѕРІР»РµС‚РІРѕСЂСЏСЋС‚ Р·Р°РґР°РЅРЅРѕРјСѓ Р±Р°Р·РёСЃСѓ" << endl;
 			return true;
 		}
 		else
 		{
-			cout << "Не все текущие параметры\n" << Num1 << "\n" << Num2 << "удовлетворяют заданному базису" << endl;
+			cout << "РќРµ РІСЃРµ С‚РµРєСѓС‰РёРµ РїР°СЂР°РјРµС‚СЂС‹\n" << Num1 << "\n" << Num2 << "СѓРґРѕРІР»РµС‚РІРѕСЂСЏСЋС‚ Р·Р°РґР°РЅРЅРѕРјСѓ Р±Р°Р·РёСЃСѓ" << endl;
 			return false;
 		}
 	}
 	else {
-		cout << "необходимо задать параметры" << endl;
+		cout << "РЅРµРѕР±С…РѕРґРёРјРѕ Р·Р°РґР°С‚СЊ РїР°СЂР°РјРµС‚СЂС‹" << endl;
 	}
 }
 void ShowBasis(int *Basis) {
 	if (Basis == NULL) {
-		cout << "Базис не задан" << endl;
+		cout << "Р‘Р°Р·РёСЃ РЅРµ Р·Р°РґР°РЅ" << endl;
 	}
 	else {
-		cout << "Текущий базис:" << endl;
-		int n = _msize(Basis) / sizeof(int);//количество элементов массива
+		cout << "РўРµРєСѓС‰РёР№ Р±Р°Р·РёСЃ:" << endl;
+		int n = _msize(Basis) / sizeof(int);//РєРѕР»РёС‡РµСЃС‚РІРѕ СЌР»РµРјРµРЅС‚РѕРІ РјР°СЃСЃРёРІР°
 		cout << "(";
 		for (int i = 0; i < n;i++) {
 			cout << Basis[i] << "; ";
@@ -243,55 +257,182 @@ void ShowBasis(int *Basis) {
 		cout << ")" << endl;
 	}
 }
+int* Add(int *ModParam1,int *ModParam2, int *Basis) {
+	int n = _msize(Basis) / sizeof(int);
+	int *A = new int[n];
+	for (int i = 0;i < n;i++) {
+		A[i] = (ModParam1[i] + ModParam2[i]) % Basis[i];
+	}
+	return A;
+}
+int* Multy(int *ModParam1,int *ModParam2, int *Basis) {
+	int n = _msize(Basis) / sizeof(int);
 
+	int *A = new int[n];
+	for (int i = 0;i < n;i++) {
+		A[i] = (ModParam1[i] * ModParam2[i]) % Basis[i];
+	}
+	return A;
+}
+
+int* CreateModParams(int *Basis, int Num) {
+	//С„СѓРЅРєС†РёСЏ Р±РµСЂС‘С‚ РїР°СЂР°РјРµС‚СЂС‹ РёР· С‚Р°Р±Р»РёС†С‹ РёСЃРїРѕР»СЊР·СѓРµРјС‹С… С‡РёСЃРµР» Рё РїРѕРјРµС‰Р°РµС‚ РІ РѕС‚РµРґР»СЊРЅС‹Р№ РјР°СЃСЃРёРІ СЃ РєРѕС‚РѕСЂС‹Рј Р±СѓРґРµС‚ РїСЂРѕРёСЃС…РѕРґРёС‚СЊ СЂР°Р±РѕС‚Р°
+	// РїСЂРё РїРµСЂРµС…РѕРґРµ РЅР° РґРёРЅР°РјРёРєСѓ РґРѕР±Р°РІРёС‚СЊ РїСЂРѕРІРµСЂРєСѓ РЅР° NULL Рё РѕСЃРІРѕР±РѕР¶РґРµРЅРёРµ РїР°РјСЏС‚Рё
+	double MaxNums = 1;
+	int n = _msize(Basis) / sizeof(int);//РєРѕР»РёС‡РµСЃС‚РІРѕ СЌР»РµРјРµРЅС‚РѕРІ РјР°СЃСЃРёРІР°
+	for (int i = 0; i < n;i++) {
+		MaxNums *= Basis[i];
+	}
+	MaxNums--;
+	int *ModParam = new int[n];
+	for (int i = 0; i < n;i++) {
+		ModParam[i] = Num % Basis[i];
+	}
+	return ModParam;
+}
+
+int* F(int *ModParam1,int *ModParam2, int *Basis) {//РЈСЃР»РѕР¶РЅРёС‚СЊ С„СѓРЅРєС†РёСЋ
+	//F = (a+b)^3 = a^3 + 3*a^2b + 3ab^2 + b^3
+	int n = _msize(Basis) / sizeof(int);
+	int *Func = new int[n];
+	double start_time = clock();
+	int *A3 = Multy(Multy(ModParam1, ModParam1, Basis), ModParam1, Basis);
+	int *B3 = Multy(Multy(ModParam2, ModParam2, Basis), ModParam2, Basis);
+	int *A2B_3 = Multy(Multy(ModParam1, ModParam1, Basis), Multy(CreateModParams(Basis, 3), ModParam2, Basis), Basis);
+	int *B2A_3 = Multy(Multy(ModParam2, ModParam2, Basis), Multy(CreateModParams(Basis, 3), ModParam1, Basis), Basis);
+
+	int *X = Add(A3, B3, Basis);
+	int *Y = Add(A2B_3, B2A_3, Basis);
+	Func = Add(X,Y,Basis);
+	double end_time = clock();
+	double search_time = end_time - start_time;
+	cout << "Р’Р РµРјСЏ СЂР°Р±РѕС‚С‹: " << search_time << endl;
+	cout << "Р’ РјРѕРґСѓР»СЏСЂРЅРѕР№ РЎРЎ РїРѕР»СѓС‡РµРЅРѕ: (";
+	for (int i = 0;i < n;i++) {
+		cout << Func[i] << ";  ";
+	}
+	cout << ")" << endl;
+	return Func;
+}
+
+//int** CreateTranslateTable(int **TableAllowNums, int *Basis) {
+//	double MaxNums = 1;
+//	int n = _msize(Basis) / sizeof(int);//РєРѕР»РёС‡РµСЃС‚РІРѕ СЌР»РµРјРµРЅС‚РѕРІ РјР°СЃСЃРёРІР°
+//	for (int i = 0; i < n;i++) {
+//		MaxNums *= Basis[i];
+//	}
+//	MaxNums--;
+//
+//	//РјР°СЃСЃРёРІ СЃРѕРїРѕСЃС‚Р°РІР»СЏРµС‚ С‡РёСЃР»Р° СЃ РёС… РїСЂРµРґСЃС‚Р°РІР»РµРЅРёРµРј РІ РјРѕРґСѓР»СЏСЂРЅРѕР№ РЎРЎ.
+//	//РїСЂРё РїРµСЂРµС…РѕРґРµ РЅР° РґРёРЅР°РјРёРєСѓ РґРѕР±Р°РІРёС‚СЊ СЃСЋРґР° РїСЂРѕРІРµСЂРєСѓ РЅР° NULL Рё РѕСЃРІРѕР±РѕР¶РґРµРЅРёРµ РїР°РјСЏС‚Рё
+//	TableAllowNums = new int *[MaxNums];
+//	for (int i = 0;i<MaxNums;i++) {
+//		TableAllowNums[i] = new int[n];
+//	}
+//	for (int i = 0;i< MaxNums;i++) {
+//		for (int j = 0;j<n;j++) {
+//			TableAllowNums[i][j] = i % Basis[j];
+//		}
+//	}
+//	return TableAllowNums;
+//}
+int Retranslate(int *Basis, int *Result) {//РІС‹РІРѕРґ СЂРµР·СѓСЊС‚Р°С‚Р° СЂР°Р±РѕС‚С‹ РІ 10-РѕРј РІРёРґРµ
+	double MaxNums = 1;
+	int n = _msize(Basis) / sizeof(int);//РєРѕР»РёС‡РµСЃС‚РІРѕ СЌР»РµРјРµРЅС‚РѕРІ РјР°СЃСЃРёРІР°
+	for (int i = 0; i < n;i++) {
+		MaxNums *= Basis[i];
+	}
+	MaxNums--;
+	bool found;
+	for (int i = 0;i < MaxNums;i++) {
+		found = true;
+		for (int j = 0; j < n;j++) {
+			if ((i % Basis[j]) != Result[j]) {
+				found = false;
+			}
+		}
+		if (found) {
+			cout << "РџРѕР»СѓС‡РµРЅРЅРѕРµ С‡РёСЃР»Рѕ: " << i << endl;
+			return i;
+		}
+	}
+	return 0;
+}
 int main()
-{
+{	//РІРѕР·РјРѕР¶РЅРѕ РїРµСЂРµРІРµС‚СЃРё РІСЃРµ РІ double,РЅРѕ С‚РѕРіРґР° РєР°Рє СЃРѕР·РґР°РІР°С‚СЊ С‚Р°Р±Р»РёС†Сѓ С‚СЂР°РЅСЃР»СЏР№С†РёР№
 	setlocale(LC_ALL, "rus");
 	SetConsoleCP(1251); SetConsoleOutputCP(1251);
 	bool EndApp = false;
+	int choise;
+
 	double MaxNums = 0;
 	int *Basis = NULL, *testBas;
-	double Num1 = NULL, Num2 = NULL;
-	int choise;
-	std::cout << "Выберите действие" << endl;
+	int Num1 = NULL, Num2 = NULL;//РµСЃР»Рё СЃРґРµР»Р°С‚СЊ double,С‚Рѕ РѕСЃС‚Р°С‚РѕРє РѕС‚ РґРµР»РµРЅРёСЏ РїСЂРёРґРµС‚СЃСЏ РёСЃРєР°С‚СЊ С†РёРєР»РѕРј
+								//Р·Р°РјРµРЅРёС‚СЊ DInsert Рё РїР°СЂР°РјРµС‚СЂС‹ РІ CMp Рё Create
+	//int **TableAllowNums = NULL;
+	int *ModParam1 = NULL;
+	int *ModParam2 = NULL;
+	std::cout << "Р’С‹Р±РµСЂРёС‚Рµ РґРµР№СЃС‚РІРёРµ" << endl;
 
 	while (EndApp == false)
 	{
-		cout << "1 - задать базис" << endl;
-		cout << "2 - ввести параметры" << endl;
-		cout << "3 - вычислить" << endl;
-		cout << "4 - выход" << endl;
-		//cout << "5 - использовать дефолт" << endl; todo
+		cout << "1 - Р·Р°РґР°С‚СЊ Р±Р°Р·РёСЃ" << endl;
+		cout << "2 - РІРІРµСЃС‚Рё РїР°СЂР°РјРµС‚СЂС‹" << endl;
+		cout << "3 - РІС‹С‡РёСЃР»РёС‚СЊ" << endl;
+		cout << "4 - РІС‹С…РѕРґ" << endl;
+		//cout << "5 - РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊ РґРµС„РѕР»С‚" << endl; todo
 		choise = IInsert(4);
-		cout << choise << endl;
 		switch (choise)
 		{
 		case 1: 
 
 			testBas = ReadBas();
 			if (testBas != NULL) {
-				Basis = testBas;//првоерить что передача происходит по значению
-				cout << "Базис успешно задан" << endl;
+				Basis = testBas;//РїСЂРІРѕРµСЂРёС‚СЊ С‡С‚Рѕ РїРµСЂРµРґР°С‡Р° РїСЂРѕРёСЃС…РѕРґРёС‚ РїРѕ Р·РЅР°С‡РµРЅРёСЋ
+				cout << "Р‘Р°Р·РёСЃ СѓСЃРїРµС€РЅРѕ Р·Р°РґР°РЅ" << endl;
 				ShowBasis(Basis);
 				CmpParamsBasis(Basis, Num1, Num2);
+				//С‚Р°Р±Р»РёС†Р° С‚СЂР°РЅСЃР»СЏС†РёР№ РЅРµ РёРјРµРµС‚ СЃРјС‹СЃР»Р° СЃ РїР°СЂР°РјРµС‚СЂР°РјРё С‚РёРїР° double
+				//TableAllowNums = CreateTranslateTable(TableAllowNums, Basis);//РІРѕР·РјРѕР¶РЅРѕ СЃС‚РѕРёС‚ РїРѕСЃС‚Р°РІРёС‚СЊ РїР°СЂР°РјРµС‚СЂ out, РЅРѕ СЌС‚Рѕ РЅРµ С‚РѕС‡РЅРѕ
 			}
 			else {
-				cout << "Базис не изменён"<<endl;
+				cout << "Р‘Р°Р·РёСЃ РЅРµ РёР·РјРµРЅС‘РЅ"<<endl;
 				ShowBasis(Basis);
 			}
 			break;
 		case 2: 
-			Num1 = DInsert();
-			Num2 = DInsert();
-			ShowBasis(Basis);
-			CmpParamsBasis(Basis, Num1, Num2);
+			cout << "Р’РІРµРґРёС‚Рµ РїРµСЂРІС‹Р№ РїР°СЂР°РјРµС‚СЂ: ";
+			Num1 = IInsert();
+			cout << "Р’РІРµРґРёС‚Рµ РІС‚РѕСЂРѕР№ РїР°СЂР°РјРµС‚СЂ: ";
+			Num2 = IInsert();
+			if (Basis != NULL) {
+				ShowBasis(Basis);
+				if (CmpParamsBasis(Basis, Num1, Num2)) {
+					ModParam1 = CreateModParams(Basis, Num1);//СѓРїСЂР°РІР»РµРЅРёРµ РїР°РјСЏС‚СЊСЋ
+					ModParam2 = CreateModParams(Basis, Num2);
+				}
+			}
 			break;
-		case 3: break;
+		case 3:
+			if (Basis != NULL) {
+				if (Num1 != NULL) {
+					if (CmpParamsBasis(Basis, Num1, Num2)) {
+						Retranslate(Basis, F(ModParam1, ModParam2, Basis));
+					}
+				}
+				else {
+					cout << "РќР• СѓРєР°Р·Р°РЅС‹ РїР°СЂР°РјРµС‚СЂС‹" << endl;
+				}
+			}
+			else {
+				cout << "Р‘Р°Р·РёСЃ РЅРµ Р·Р°РґР°РЅ" << endl;
+			}
+			break;
 		case 4: 
 			EndApp = true; 
 			break;
 		default:
-			cout << "Попробуйте снова" << endl;
+			cout << "РџРѕРїСЂРѕР±СѓР№С‚Рµ СЃРЅРѕРІР°" << endl;
 			break;
 		}
 	}
