@@ -1,27 +1,27 @@
-// PP_0.cpp: РѕРїСЂРµРґРµР»СЏРµС‚ С‚РѕС‡РєСѓ РІС…РѕРґР° РґР»СЏ РєРѕРЅСЃРѕР»СЊРЅРѕРіРѕ РїСЂРёР»РѕР¶РµРЅРёСЏ.
+// PP_0.cpp: определяет точку входа для консольного приложения.
 //
 #include <locale>//setlocale
 #include "stdafx.h"
+#include<vector>
 #include <Windows.h>//setconsoleCP
 #include<iostream> //cout
 #include <string>
 #include <malloc.h>
 #include <math.h> 
 #include <ctime>
-/*
-todo: РґРѕР±Р°РІРёС‚СЊ РґРёРЅР°РјРёС‡РµСЃРєСѓСЋ РїР°РјСЏС‚СЊ
-	СЂР°Р±РѕС‡РёР№ С‚Р°Р№РјРµСЂ
-	РїРµСЂРµРІРµСЃС‚Рё РІСЃРµ С‚РёРїС‹ РЅР° double
-	РґРѕР±Р°РІРёС‚СЊ СЌС‚Р°Р»РѕРЅРЅС‹Рµ Р·РЅР°С‡РµРЅРёСЏ
-*/
-
-
+#include <algorithm>
+#include <thread>
+#include <fstream>
+long long *xaF, *xbF;
+long long *MPAR1;
+long long *MPAR2;
+long long *Bas, *Adr;
 using namespace std;
 
-int IInsert(int MaxNum = INT_MAX, string input = "") {//РІРІРѕРґ С‡РёСЃР»Р° С‚РёРїР° int РѕС‚ 1 РґРѕ MaxNum
+long long IInsert(long long MaxNum = INT_MAX, string input = "") {//ввод числа типа long long от 1 до MaxNum
 	string s;
 	bool key = false;
-	int res;
+	long long res;
 
 	if (input != "") {
 		size_t check;
@@ -34,31 +34,32 @@ int IInsert(int MaxNum = INT_MAX, string input = "") {//РІРІРѕРґ С‡РёСЃР»Р° С‚Рё
 				}
 				else
 				{
-					cout << "РћС€РёР±РєР°!Р§РёСЃР»Рѕ РІРЅРµ РґРёР°РїР°Р·РѕРЅР°" << endl;
+					cout << "Ошибка!Число вне диапазона" << endl;
 					return  -1;
 				}
 			}
 			else {
-				cout << "РћС€РёР±РєР° РІРІРѕРґР°" << endl;
+				cout << "Ошибка ввода" << endl;
 				return -1;
 			}
 		}
-		catch (const invalid_argument&) { cout << "РћС€РёР±РєР°!Р’РІРµРґРµРЅРѕ РЅРµ С‡РёСЃР»Рѕ" << endl; 
-		return -1;
-		}
-		catch (const out_of_range&) {
-			cout << "Р§РёСЃР»Рѕ РІРЅРµ РґРёР°РїР°Р·РѕРЅР° integer" << endl;
+		catch (const invalid_argument&) {
+			cout << "Ошибка!Введено не число" << endl;
 			return -1;
 		}
-		
+		catch (const out_of_range&) {
+			cout << "Число вне диапазона integer" << endl;
+			return -1;
+		}
+
 	}
 
 	do {
 
 		getline(cin, s);
-		
-		int i;
-		if (int i = s.find(' ') != std::string::npos) {
+
+		long long i;
+		if ((i = s.find(' ')) != std::string::npos) {
 			s.resize(i + 1);
 		}
 		while ((i = s.find(' ')) != std::string::npos)
@@ -74,16 +75,16 @@ int IInsert(int MaxNum = INT_MAX, string input = "") {//РІРІРѕРґ С‡РёСЃР»Р° С‚Рё
 				}
 				else
 				{
-					cout << "Р’РЅРµ РґРёР°РїР°Р·РѕРЅР° РєРѕР»РёС‡РµСЃС‚РІР° СЌР»РµРјРµРЅС‚РѕРІ" << endl;
+					cout << "Вне диапазона количества элементов" << endl;
 				}
 			}
 			else {
-				cout << "РћС€РёР±РєР° РІРІРѕРґР°" << endl;
+				cout << "Ошибка ввода" << endl;
 			}
 		}
-		catch (const invalid_argument&) { cout << "Р’РІРµРґРµРЅРѕ РЅРµ С‡РёСЃР»Рѕ" << endl; cout << "РџРѕРїСЂРѕР±СѓР№С‚Рµ СЃРЅРѕРІР°" << endl; }
+		catch (const invalid_argument&) { cout << "Введено не число" << endl; cout << "Попробуйте снова" << endl; }
 		catch (const out_of_range&) {
-			cout << "Р§РёСЃР»Рѕ РІРЅРµ РґРёР°РїР°Р·РѕРЅР° integer" << endl; cout << "РџРѕРїСЂРѕР±СѓР№С‚Рµ СЃРЅРѕРІР°" << endl;
+			cout << "Число вне диапазона integer" << endl; cout << "Попробуйте снова" << endl;
 		}
 	} while (key == false);
 	return res;
@@ -95,13 +96,13 @@ double DInsert() {
 	bool key = false;
 	double res;
 	system("cls");
-	cout << "Р’РІРµРґРёС‚Рµ С‡РёСЃР»Рѕ: ";
+	cout << "Введите число: ";
 	/*getline(cin, s);*/
 	do {
 
 		getline(cin, s);
-		int i;
-		if (int i = s.find(' ') != std::string::npos) {
+		long long i;
+		if ((i = s.find(' ')) != std::string::npos) {
 			s.resize(i + 1);
 		}
 		while ((i = s.find(' ')) != std::string::npos)
@@ -118,297 +119,795 @@ double DInsert() {
 					}
 					else
 					{
-						cout << "Р§РёСЃР»Рѕ РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ С†РµР»С‹Рј" << endl;
+						cout << "Число должно быть целым" << endl;
 					}
 				}
 				else {
-					cout << "РСЃРїРѕР»СЊР·СѓСЋС‚СЃСЏ С‚РѕР»СЊРєРѕ РЅРµРѕС‚СЂРёС†Р°С‚РµР»СЊРЅС‹Рµ С‡РёСЃР»Р°" << endl;
+					cout << "Используются только неотрицательные числа" << endl;
 				}
 			}
 			else {
-				cout << "РћС€РёР±РєР° РІРІРѕРґР°" << endl;
+				cout << "Ошибка ввода" << endl;
 			}
 		}
-		catch (const invalid_argument&) { cout << "Р’РІРµРґРµРЅРѕ РЅРµ С‡РёСЃР»Рѕ" << endl; cout << "РџРѕРїСЂРѕР±СѓР№С‚Рµ СЃРЅРѕРІР°" << endl; }
+		catch (const invalid_argument&) { cout << "Введено не число" << endl; cout << "Попробуйте снова" << endl; }
 		catch (const out_of_range&) {
-			cout << "Р§РёСЃР»Рѕ РІРЅРµ РґРёР°РїР°Р·РѕРЅР° double" << endl; cout << "РџРѕРїСЂРѕР±СѓР№С‚Рµ СЃРЅРѕРІР°" << endl;
+			cout << "Число вне диапазона double" << endl; cout << "Попробуйте снова" << endl;
 		}
 	} while (key != true);
 	return res;
 }
 
 
-int gcd(int x, int y)//С„СѓРЅРєС†РёСЏ СЃСЂР°РІРЅРёРІР°РµС‚ 2 С‡РёСЃР»Р°, РІРѕР·РІСЂР°С‰Р°РµС‚ 1 РµСЃР»Рё С‡РёСЃР»Р° РІР·РёРјРЅРѕРїСЂРѕСЃС‚С‹Рµ.
+long long gcd(long long x, long long y)//функция сравнивает 2 числа, возвращает 1 если числа взимнопростые.
 {
 	return y ? gcd(y, x%y) : x;
 }
-int* ReadBas() {//С„СѓРЅРєС†РёСЏ СЃС‡С‚С‹РІР°РµС‚ С‡РёСЃР»Р° Р±Р°Р·РёСЃР°, РІРµСЂРЅРµС‚ РјР°СЃСЃРёРІ СЌР»РµРјРµРЅС‚РѕРІ РёР»Рё NULL
-	cout << "Р’РІРµРґРёС‚Рµ Р±Р°Р·РёСЃ С‡РёСЃР»Р°, СЂР°Р·РґРµР»СЏСЏ С‡РёСЃР»Р° РїСЂРѕР±РµР»РѕРј" << endl;
+long long* ReadBas() {//функция счтывает числа базиса, вернет массив элементов или NULL
+	cout << "Введите базис числа, разделяя числа пробелом" << endl;
 	string SBasNums = "";
 	getline(cin, SBasNums);
-	int z;
-	while ((z = SBasNums.find("  ")) != std::string::npos)//СѓР±РёСЂР°РµРј Р»РёС€РЅРёРµ СЂР°Р·РґРµР»РёС‚РµР»Рё
+	long long z;
+	while ((z = SBasNums.find("  ")) != std::string::npos)//убираем лишние разделители
 		SBasNums.erase(z, 1);
 	if (SBasNums != "") {
-		if (SBasNums[0] == ' ')//СѓР±РёСЂР°РµРј РїСЂРѕР±РµР»С‹ РІ 1 Рё РїРѕСЃР»РµРґРЅРµРј СЃРёРјРІРѕР»Рµ СЃС‚СЂРѕРєРё РµСЃР»Рё РµСЃС‚СЊ
+		if (SBasNums[0] == ' ')//убираем пробелы в 1 и последнем символе строки если есть
 			SBasNums.erase(0, 1);
 		if (SBasNums[SBasNums.length() - 1] == ' ')
-			SBasNums.erase(SBasNums.length() - 1, 1);//С‚РµРїРµСЂСЊ РІСЃРµ РїР°СЂР°РјРµС‚СЂС‹ РіР°СЂР°РЅРёС‚СЂРѕРІР°РЅРЅРѕ СЂР°Р·РґРµР»РµРЅС‹ 1 РїСЂРѕР±РµР»РѕРј
+			SBasNums.erase(SBasNums.length() - 1, 1);//теперь все параметры гаранитрованно разделены 1 пробелом
 
 		short SpaceCount = 0;
-		int wtf = SBasNums.length() - 1;
-		for (int i = 0;i < wtf;i++) {
+		long long wtf = SBasNums.length() - 1;
+		for (long long i = 0; i < wtf; i++) {
 			if (SBasNums[i] == ' ')
 				SpaceCount++;
 		}
-		string *SArr1Basis;//РјР°СЃСЃРёРІ СЃ СЌР»РµРјРµРЅС‚Р°РјРё С‚РёРїР° string, СЃРѕРґРµСЂР¶Р°С‰РёР№ Р·РЅР°С‡РµРЅРёСЏ Р±Р°Р·РёСЃР°
+		string *SArr1Basis;//массив с элементами типа string, содержащий значения базиса
 		SArr1Basis = new string[SpaceCount + 1];
-		for (int i = 0;i < SpaceCount + 1;i++) {
+		for (long long i = 0; i < SpaceCount + 1; i++) {
 			if (i != SpaceCount) {
-				int k = SBasNums.find(' ');
+				long long k = SBasNums.find(' ');
 				SArr1Basis[i] = SBasNums.substr(0, k);
 				SBasNums.erase(0, k + 1);
 			}
 			else {
-				SArr1Basis[SpaceCount] = SBasNums;//РІРѕС‚ С‚СѓС‚ РѕСЃС‚РѕСЂРѕР¶РЅРѕ. РєР°Рє РїРµСЂРµРґР°С‘С‚СЃСЏ?
+				SArr1Basis[SpaceCount] = SBasNums;//вот тут осторожно. как передаётся?
 			}
-		}//     1    2 3456 7 8 910    С‚РµcС‚
-		int NumElements = SpaceCount + 1;
-		int *IArr1Basis;//РјР°СЃСЃРёРІ РґР»СЏ СЌР»РµРјРµРЅС‚РѕРІ Р±Р°Р·РёСЃР°
-		IArr1Basis = new int[NumElements];
-		for (int i = 0; i < NumElements;i++) {
-			IArr1Basis[i] = IInsert(INT_MAX, SArr1Basis[i]);//РїР°СЂСЃРёРј
+		}//     1    2 3456 7 8 910    теcт
+		long long NumElements = SpaceCount + 1;
+		long long *IArr1Basis;//массив для элементов базиса
+		IArr1Basis = new long long[NumElements];
+		for (long long i = 0; i < NumElements; i++) {
+			IArr1Basis[i] = IInsert(INT_MAX, SArr1Basis[i]);//парсим
 		}
 		bool BasisCreated = true;
 
-		for (int i = 0; i < NumElements;i++)
+		for (long long i = 0; i < NumElements; i++)
 		{
-			if (IArr1Basis[i] == -1) {//РїСЂРѕРІРµСЂСЏРµРј РІСЃРµ Р»Рё СЌР»РµРјРµРЅС‚С‹ Р±С‹Р»Рё РєРѕСЂСЂРµРєС‚РЅС‹
-				cout << "РћС€РёР±РєР° РІ Р·Р°РїРёСЃРё: " << SArr1Basis[i] << endl;
+			if (IArr1Basis[i] == -1) {//проверяем все ли элементы были корректны
+				cout << "Ошибка в записи: " << SArr1Basis[i] << endl;
 				BasisCreated = false;
 			}
 		}
-		if (BasisCreated == true) {//Р±Р°Р·РёСЃ РѕРїРёСЃР°РЅ РєРѕСЂСЂРµРєС‚РЅРѕ
-			for (int i = 0; i < NumElements;i++) {//РІСЃРµ СЌР»РµРјРµРЅС‚С‹ Р±Р°Р·РёСЃР° С‚Р°РєР¶Рµ РґРѕР»Р¶РЅС‹ Р±С‹С‚СЊ РїРѕРїР°СЂРЅРѕ РІР·Р°РёРјРЅРѕ РїСЂРѕСЃС‚С‹.
-				for (int j = i; j < NumElements;j++) {
+		if (BasisCreated == true) {//базис описан корректно
+			for (long long i = 0; i < NumElements; i++) {//все элементы базиса также должны быть попарно взаимно просты.
+				for (long long j = i; j < NumElements; j++) {
 					if (i == j) {
-						//СЃСЂР°РІРЅРёРІР°С‚СЊ СЃ СЃРѕР±РѕР№ РЅРµ РЅСѓР¶РЅРѕ, РЅРѕ РµСЃР»Рё РґРѕР±Р°РІРёС‚СЊ РІ С†РёРєР»Рµ +1 С‚Рѕ РјРѕР¶РЅРѕ Рё Р·Р° РіСЂР°РЅРёС†С‹ РјР°СЃСЃРёРІР° СѓР№С‚Рё
+						//сравнивать с собой не нужно, но если добавить в цикле +1 то можно и за границы массива уйти
 					}
 					else {
 						if (gcd(IArr1Basis[i], IArr1Basis[j]) != 1) {
 							BasisCreated = false;
-							cout << "Р§РёСЃР»Р° " << IArr1Basis[i] << " Рё " << IArr1Basis[j] << " РЅРµ СЏРІР»СЏСЋС‚СЃСЏ РІР·Р°РёРјРЅРѕРїСЂРѕСЃС‚С‹РјРё" << endl;
+							cout << "Числа " << IArr1Basis[i] << " и " << IArr1Basis[j] << " не являются взаимнопростыми" << endl;
 						}
 					}
 				}
 			}
-			if (BasisCreated) {//РІСЃРµ С‡РёСЃР»Р° РѕРєР°Р·Р°Р»РёСЃСЊ РІР·Р°РёРјРЅРѕ РїСЂРѕСЃС‚С‹РјРё
+			if (BasisCreated) {//все числа оказались взаимно простыми
 				return IArr1Basis;
 			}
-			else {//РЅР°Р№РґРµРЅС‹ РЅРµ РІР·Р°РёРјРЅРѕ РїСЂРѕСЃС‚С‹Рµ С‡РёСЃР»Р°
+			else {//найдены не взаимно простые числа
 				return NULL;
 			}
 		}
-		else {//РЅРµРєРѕСЂСЂРµРєС‚РЅРѕ РѕРїРёСЃР°РЅ Р±Р°Р·РёСЃ
+		else {//некорректно описан базис
 			return NULL;
 		}
 	}
-	else {//РµСЃР»Рё РІРІРµРґРµРЅР° РїСѓСЃС‚Р°СЏ СЃС‚СЂРѕРєР° SBasNums ==""
-		cout << "Р’РІРµРґРµРЅР° РїСѓСЃС‚Р°СЏ СЃС‚СЂРѕРєР°" << endl;
+	else {//если введена пустая строка SBasNums ==""
+		cout << "Введена пустая строка" << endl;
 		return NULL;
 	}
 }
 
-bool CmpParamsBasis(int *Basis, int Num1, int Num2) {
+bool CmpParamsBasis(long long *Basis, long long Num1, long long Num2) {
 	double MaxNums;
-	int n = _msize(Basis) / sizeof(int);//РєРѕР»РёС‡РµСЃС‚РІРѕ СЌР»РµРјРµРЅС‚РѕРІ РјР°СЃСЃРёРІР°
+	long long n = _msize(Basis) / sizeof(long long);//количество элементов массива
 	MaxNums = 1;
-	for (int i = 0; i < n;i++) {
+	for (long long i = 0; i < n; i++) {
 		MaxNums *= Basis[i];
 	}
 	MaxNums--;
-	cout << "Р”РёР°РїР°Р·РѕРЅ Р·РЅР°С‡РµРЅРёР№ Р±Р°Р·РёСЃР°: [0; " << MaxNums << "]" << endl;
+	cout << "Диапазон значений базиса: [0; " << MaxNums << "]" << endl;
 	if ((Num1 != NULL) && (Num2 != NULL)) {
 		if ((Num1 <= MaxNums) && (Num2 <= MaxNums)) {
-			cout << "РџР°СЂР°РјРµС‚СЂС‹ \n" << Num1 << "\n" << Num2 << "\n СѓРґРѕРІР»РµС‚РІРѕСЂСЏСЋС‚ Р·Р°РґР°РЅРЅРѕРјСѓ Р±Р°Р·РёСЃСѓ" << endl;
+			cout << "Параметры \n" << Num1 << "\n" << Num2 << "\n удовлетворяют заданному базису" << endl;
 			return true;
 		}
 		else
 		{
-			cout << "РќРµ РІСЃРµ С‚РµРєСѓС‰РёРµ РїР°СЂР°РјРµС‚СЂС‹\n" << Num1 << "\n" << Num2 << "СѓРґРѕРІР»РµС‚РІРѕСЂСЏСЋС‚ Р·Р°РґР°РЅРЅРѕРјСѓ Р±Р°Р·РёСЃСѓ" << endl;
+			cout << "Не все текущие параметры\n" << Num1 << "\n" << Num2 << "удовлетворяют заданному базису" << endl;
 			return false;
 		}
 	}
 	else {
-		cout << "РЅРµРѕР±С…РѕРґРёРјРѕ Р·Р°РґР°С‚СЊ РїР°СЂР°РјРµС‚СЂС‹" << endl;
+		cout << "необходимо задать параметры" << endl;
 	}
 }
-void ShowBasis(int *Basis) {
+void ShowBasis(long long *Basis) {
 	if (Basis == NULL) {
-		cout << "Р‘Р°Р·РёСЃ РЅРµ Р·Р°РґР°РЅ" << endl;
+		cout << "Базис не задан" << endl;
 	}
 	else {
-		cout << "РўРµРєСѓС‰РёР№ Р±Р°Р·РёСЃ:" << endl;
-		int n = _msize(Basis) / sizeof(int);//РєРѕР»РёС‡РµСЃС‚РІРѕ СЌР»РµРјРµРЅС‚РѕРІ РјР°СЃСЃРёРІР°
+		cout << "Текущий базис:" << endl;
+		long long n = _msize(Basis) / sizeof(long long);//количество элементов массива
 		cout << "(";
-		for (int i = 0; i < n;i++) {
+		for (long long i = 0; i < n; i++) {
 			cout << Basis[i] << "; ";
 		}
 		cout << ")" << endl;
 	}
 }
-int* Add(int *ModParam1,int *ModParam2, int *Basis) {
-	int n = _msize(Basis) / sizeof(int);
-	int *A = new int[n];
-	for (int i = 0;i < n;i++) {
-		A[i] = (ModParam1[i] + ModParam2[i]) % Basis[i];
-	}
-	return A;
-}
-int* Multy(int *ModParam1,int *ModParam2, int *Basis) {
-	int n = _msize(Basis) / sizeof(int);
 
-	int *A = new int[n];
-	for (int i = 0;i < n;i++) {
-		A[i] = (ModParam1[i] * ModParam2[i]) % Basis[i];
-	}
-	return A;
-}
 
-int* CreateModParams(int *Basis, int Num) {
-	//С„СѓРЅРєС†РёСЏ Р±РµСЂС‘С‚ РїР°СЂР°РјРµС‚СЂС‹ РёР· С‚Р°Р±Р»РёС†С‹ РёСЃРїРѕР»СЊР·СѓРµРјС‹С… С‡РёСЃРµР» Рё РїРѕРјРµС‰Р°РµС‚ РІ РѕС‚РµРґР»СЊРЅС‹Р№ РјР°СЃСЃРёРІ СЃ РєРѕС‚РѕСЂС‹Рј Р±СѓРґРµС‚ РїСЂРѕРёСЃС…РѕРґРёС‚СЊ СЂР°Р±РѕС‚Р°
-	// РїСЂРё РїРµСЂРµС…РѕРґРµ РЅР° РґРёРЅР°РјРёРєСѓ РґРѕР±Р°РІРёС‚СЊ РїСЂРѕРІРµСЂРєСѓ РЅР° NULL Рё РѕСЃРІРѕР±РѕР¶РґРµРЅРёРµ РїР°РјСЏС‚Рё
-	double MaxNums = 1;
-	int n = _msize(Basis) / sizeof(int);//РєРѕР»РёС‡РµСЃС‚РІРѕ СЌР»РµРјРµРЅС‚РѕРІ РјР°СЃСЃРёРІР°
-	for (int i = 0; i < n;i++) {
-		MaxNums *= Basis[i];
-	}
-	MaxNums--;
-	int *ModParam = new int[n];
-	for (int i = 0; i < n;i++) {
+long long* CreateModParams(long long *Basis, long long Num) {
+	//функция берёт параметры из таблицы используемых чисел и помещает в отедльный массив с которым будет происходить работа
+	// при переходе на динамику добавить проверку на NULL и освобождение памяти
+	long long n = _msize(Basis) / sizeof(long long);//количество элементов массива
+	long long *ModParam = new long long[n];
+	for (long long i = 0; i < n; i++) {
 		ModParam[i] = Num % Basis[i];
 	}
 	return ModParam;
 }
 
-int* F(int *ModParam1,int *ModParam2, int *Basis) {//РЈСЃР»РѕР¶РЅРёС‚СЊ С„СѓРЅРєС†РёСЋ
-	//F = (a+b)^3 = a^3 + 3*a^2b + 3ab^2 + b^3
-	int n = _msize(Basis) / sizeof(int);
-	int *Func = new int[n];
-	double start_time = clock();
-	int *A3 = Multy(Multy(ModParam1, ModParam1, Basis), ModParam1, Basis);
-	int *B3 = Multy(Multy(ModParam2, ModParam2, Basis), ModParam2, Basis);
-	int *A2B_3 = Multy(Multy(ModParam1, ModParam1, Basis), Multy(CreateModParams(Basis, 3), ModParam2, Basis), Basis);
-	int *B2A_3 = Multy(Multy(ModParam2, ModParam2, Basis), Multy(CreateModParams(Basis, 3), ModParam1, Basis), Basis);
-
-	int *X = Add(A3, B3, Basis);
-	int *Y = Add(A2B_3, B2A_3, Basis);
-	Func = Add(X,Y,Basis);
-	double end_time = clock();
-	double search_time = end_time - start_time;
-	cout << "Р’Р РµРјСЏ СЂР°Р±РѕС‚С‹: " << search_time << endl;
-	cout << "Р’ РјРѕРґСѓР»СЏСЂРЅРѕР№ РЎРЎ РїРѕР»СѓС‡РµРЅРѕ: (";
-	for (int i = 0;i < n;i++) {
-		cout << Func[i] << ";  ";
+void Add2(long long nstart,long long nend) {
+	for (long long i = nstart; i <= nend; i++) {
+		Adr[i] = (MPAR1[i] + MPAR2[i]) % Bas[i];
 	}
-	cout << ")" << endl;
-	return Func;
+}
+void Add1(long long *ModParam1, long long *ModParam2, long long *Basis, long long *B) {
+	MPAR1 = ModParam1;
+	MPAR2 = ModParam2;
+	Bas = Basis;
+	Adr = B;
+	long long n = _msize(Basis) / sizeof(long long);
+	thread s1(Add2, 0, ((n / 4) - 1));
+	thread s2(Add2, (n / 4), ((2*n / 4) - 1));
+	thread s3(Add2, (2*n / 4), (3*n/4)-1);
+	Add2((3*n / 4), n - 1);
+	s1.join();
+	s2.join();
+	s3.join();
+	B = Adr;
+}
+void Add(long long *ModParam1, long long *ModParam2, long long *Basis, long long *B) {
+	long long n = _msize(Basis) / sizeof(long long);
+	for (long long i = 0; i < n; i++) {
+		B[i] = (ModParam1[i] + ModParam2[i]) % Basis[i];
+	}
 }
 
-//int** CreateTranslateTable(int **TableAllowNums, int *Basis) {
-//	double MaxNums = 1;
-//	int n = _msize(Basis) / sizeof(int);//РєРѕР»РёС‡РµСЃС‚РІРѕ СЌР»РµРјРµРЅС‚РѕРІ РјР°СЃСЃРёРІР°
-//	for (int i = 0; i < n;i++) {
-//		MaxNums *= Basis[i];
-//	}
-//	MaxNums--;
-//
-//	//РјР°СЃСЃРёРІ СЃРѕРїРѕСЃС‚Р°РІР»СЏРµС‚ С‡РёСЃР»Р° СЃ РёС… РїСЂРµРґСЃС‚Р°РІР»РµРЅРёРµРј РІ РјРѕРґСѓР»СЏСЂРЅРѕР№ РЎРЎ.
-//	//РїСЂРё РїРµСЂРµС…РѕРґРµ РЅР° РґРёРЅР°РјРёРєСѓ РґРѕР±Р°РІРёС‚СЊ СЃСЋРґР° РїСЂРѕРІРµСЂРєСѓ РЅР° NULL Рё РѕСЃРІРѕР±РѕР¶РґРµРЅРёРµ РїР°РјСЏС‚Рё
-//	TableAllowNums = new int *[MaxNums];
-//	for (int i = 0;i<MaxNums;i++) {
-//		TableAllowNums[i] = new int[n];
-//	}
-//	for (int i = 0;i< MaxNums;i++) {
-//		for (int j = 0;j<n;j++) {
-//			TableAllowNums[i][j] = i % Basis[j];
-//		}
-//	}
-//	return TableAllowNums;
-//}
-int Retranslate(int *Basis, int *Result) {//РІС‹РІРѕРґ СЂРµР·СѓСЊС‚Р°С‚Р° СЂР°Р±РѕС‚С‹ РІ 10-РѕРј РІРёРґРµ
-	double MaxNums = 1;
-	int n = _msize(Basis) / sizeof(int);//РєРѕР»РёС‡РµСЃС‚РІРѕ СЌР»РµРјРµРЅС‚РѕРІ РјР°СЃСЃРёРІР°
-	for (int i = 0; i < n;i++) {
-		MaxNums *= Basis[i];
+long long* CreateModParams1(long long *Basis, INT64 Num) {
+	//функция берёт параметры из таблицы используемых чисел и помещает в отедльный массив с которым будет происходить работа
+	// при переходе на динамику добавить проверку на NULL и освобождение памяти
+	long long n = _msize(Basis) / sizeof(long long);//количество элементов массива
+
+	long long *ModParam = new long long[n];
+	for (INT64 i = 0; i < n; i++) {
+		ModParam[i] = Num % Basis[i];
 	}
-	MaxNums--;
-	bool found;
-	for (int i = 0;i < MaxNums;i++) {
-		found = true;
-		for (int j = 0; j < n;j++) {
-			if ((i % Basis[j]) != Result[j]) {
-				found = false;
-			}
+	return ModParam;
+}
+
+
+
+//----------------------------------------------------------------------------------------------------------------------------------
+bool MoreOrNot(string num1, string num2) {
+	//num1 num2 > 0
+	long long n1 = num1.length();
+	long long n2 = num2.length();
+	if (n1 > n2) {
+		return true;
+	}
+	if (n1 < n2) {
+		return false;
+	}
+	for (long long i = 0;i < n1;i++) {
+		if ((num1[i] - '0') >(num2[i] - '0')) {
+			return true;
 		}
-		if (found) {
-			cout << "РџРѕР»СѓС‡РµРЅРЅРѕРµ С‡РёСЃР»Рѕ: " << i << endl;
-			return i;
+		if ((num1[i] - '0') <(num2[i] - '0')) {
+			return false;
 		}
 	}
+	return true;
+}
+string AMinB(string num1, string num2) {
+	//подаём параметры в функцию только когда точно уверенны, что num1 > num2
+	long long n1 = num1.length();
+	long long n2 = num2.length();
+	string s3;//result
+	reverse(num1.begin(), num1.end());
+	reverse(num2.begin(), num2.end());
+	long long ostatok = 0;
+	for (long long i = 0;i < n2;i++) {
+		long long sum = ((num1[i] - '0') - (num2[i] - '0') - ostatok);
+		if (sum < 0) {
+			sum += 10;
+			ostatok = 1;
+		}
+		else {
+			ostatok = 0;
+		}
+		s3.push_back(sum % 10 + '0');
+	}
+	for (long long i = n2;i < n1;i++) {
+		long long sum = ((num1[i] - '0') - ostatok);
+		if (sum < 0) {
+			sum += 10;
+			ostatok = 1;
+		}
+		else {
+			ostatok = 0;
+		}
+		s3.push_back(sum % 10 + '0');
+	}
+	reverse(s3.begin(), s3.end());
+	while (s3[0] == '0')
+	{
+		s3.erase(0, 1);
+		if (s3 == "") {
+			return "0";
+		}
+	}
+	return s3;
+}
+string SumBF(string num1, string num2) {
+	long long n1 = num1.length();
+	long long n2 = num2.length();
+	if (n1 > n2) {
+		swap(num1, num2);//более длинная строка вторая
+		swap(n1, n2);
+	}
+	string s3;//result
+	reverse(num1.begin(), num1.end());
+	reverse(num2.begin(), num2.end());
+	long long ostatok = 0;
+	for (long long i = 0;i < n1;i++) {
+		long long sum = ((num1[i] - '0') + (num2[i] - '0') + ostatok);
+		s3.push_back(sum % 10 + '0');
+		ostatok = sum / 10;
+	}
+	for (long long i = n1;i < n2;i++) {
+		long long sum = ((num2[i] - '0') + ostatok);
+		s3.push_back(sum % 10 + '0');
+		ostatok = sum / 10;
+	}
+	if (ostatok) s3.push_back(ostatok + '0');
+	reverse(s3.begin(), s3.end());
+	return s3;
+}
+string MultBF(string num1, string num2) {
+	long long n1 = num1.length();
+	long long n2 = num2.length();
+	if (n1 > n2) {
+		swap(num1, num2);//более длинная строка вторая
+		swap(n1, n2);
+	}
+	string s3 = "0";//result
+	reverse(num1.begin(), num1.end());
+	reverse(num2.begin(), num2.end());
+	long long ostatok = 0;
+	//последняя цифра n1 это n1[0]
+	//каждую n[i-uyu] перемножаем с каждым n2[k-ым]
+	string promezhut = "";
+	for (long long i = 0;i < n1;i++) {
+		promezhut = "";
+		for (long long j = 0;j < n2;j++) {
+			long long sum = ((num1[i] - '0')*(num2[j] - '0') + ostatok);
+			promezhut.push_back(sum % 10 + '0');
+			ostatok = sum / 10;
+		}
+		if (ostatok != 0) {
+			promezhut.push_back(ostatok + '0');
+		}
+		ostatok = 0;
+		reverse(promezhut.begin(), promezhut.end());
+		for (long long l = 0;l < i;l++) {
+			promezhut.push_back('0');
+		}
+		s3 = SumBF(s3, promezhut);
+	}
+
+	return s3;
+}
+string* MultNASum(string num1, string num2, string *resultarea) {
+	string i = "1";
+	string *res = new string(num1);
+	//cout << "WTF" << *res;
+	while (i != num2) {
+		*res = SumBF(*res, num1);
+		i = SumBF(i, "1");
+	}
+	//cout << "WTF" << *res << endl;
+	*resultarea = *res;
+	delete res;
+	//cout << *resultarea << "DFFGRLUKHFJE:FBR" << endl;
+	return resultarea;
+}
+//----------------------------------------------------------------------------------------------------------------------------------
+string FactLongLong(long long Num) {
+	string aF = "1";
+	for (long long i = 1;i <= Num;i++) {
+		string *whereret = new string();
+		aF = MultBF(aF, to_string(i));
+		//aF = MultBF(aF, to_string(i));
+	}
+	return aF;
+}
+string RepeatFormulaLongLong(long long Num1, long long Num2) {
+	clock_t startT = clock();
+
+	//MultNASum("2", "4",whereret);
+	string N1 = to_string(Num1);
+	string N2 = to_string(Num2);
+	string aF = "1";
+	aF = FactLongLong(Num1);
+	string bF = "1";
+	bF = FactLongLong(Num2);
+	string i = "1";
+	string etoresult = SumBF(aF, bF);//a!=b!
+
+	string res1;
+
+	res1 = MultBF(aF, bF);//a!*b!
+	res1 = SumBF(etoresult, res1);//a!*b! + a! + b!
+	string resumn;
+	resumn = MultBF(aF, aF);
+	res1 = SumBF(res1, resumn);//a!*b! + a! + b! + a!*a!
+	resumn = MultBF(bF, bF);
+	res1 = SumBF(res1, resumn);//a!*b! + a! + b! + a!*a! + b!*b!
+	clock_t endT = clock();
+	cout << "Время работы в длинной арифметике: " << (double)(endT - startT) / CLOCKS_PER_SEC << endl;
+	cout << res1 << "  : Дада это был res" << endl;
+	return res1;
+}
+
+long long Retranslate(long long *Basis, long long *Result, long long Num1, long long Num2) {//вывод резуьтата работы в 10-ом виде
+
+	long long n = _msize(Basis) / sizeof(long long);//количество элементов массива
+	string result = RepeatFormulaLongLong(Num1, Num2);
+
+	const long long base = 1000 * 1000 * 1000;
+	bool flagCorrect = true;
+
+	for (long long everyPinBas = 0;everyPinBas < n;everyPinBas++) {
+		vector<long long> a;
+		for (long long i = (long long)result.length(); i > 0; i -= 9)//заполнили вектор
+			if (i < 9)
+				a.push_back(atoi(result.substr(0, i).c_str()));
+			else
+				a.push_back(atoi(result.substr(i - 9, 9).c_str()));//закончили заполнять
+
+		long long carry = 0;
+		long long b = Basis[everyPinBas];
+		for (long long i = (long long)a.size() - 1; i >= 0; --i) {
+			long long cur = a[i] + carry * 1ll * base;
+			a[i] = long long(cur / b);
+			carry = long long(cur % b);
+		}
+		while (a.size() > 1 && a.back() == 0)
+			a.pop_back();
+
+
+		if (carry != Result[everyPinBas]) {
+			flagCorrect = false;
+		}
+	}
+	if (flagCorrect == true) {
+		cout << "" << endl;
+		cout << "Answer:  " << result << endl;
+	}
+	cout << "GG" << endl;
 	return 0;
 }
+
+
+long long* Multy(long long *ModParam1, long long *ModParam2, long long *Basis, bool flagdelete, long long num) {
+	long long n = _msize(Basis) / sizeof(long long);
+	long long *B;
+	long long *A = new long long[n];
+	for (long long i = 0; i < n; i++) {
+		A[i] = ModParam1[i];
+	}
+	long long i = 1;
+	long long *currentparam;
+	bool flag = false;
+	currentparam = CreateModParams(Basis, i);
+	for (long long j = 0; j < n; j++) {
+		if (currentparam[j] != ModParam2[j]) {
+			flag = true;
+		}
+	}
+	delete[] currentparam;
+	if (flag) {
+		flag = false;
+		while (!flag)
+		{
+			flag = true;
+			i++;
+			B = new long long[n];
+			Add(A, ModParam1, Basis, B);
+			delete[] A;
+			A = B;
+			currentparam = CreateModParams(Basis, i);
+			for (long long j = 0; j < n; j++) {
+				if (currentparam[j] != ModParam2[j]) {
+					flag = false;
+				}
+			}
+			delete[] currentparam;
+		}
+	}
+	if (flagdelete == true) {
+		delete[] ModParam1;
+		delete[] ModParam2;
+	}
+	if (num == 1) {
+		xaF = A;
+	}
+	if (num == 2) {
+		xbF = A;
+	}
+	return A;
+}
+
+long long* Multy1(long long *ModParam1, long long *ModParam2, long long *Basis, bool flagdelete, long long num) {
+	long long n = _msize(Basis) / sizeof(long long);
+	long long *B;
+	long long *A = new long long[n];
+	for (long long i = 0; i < n; i++) {
+		A[i] = ModParam1[i];
+	}
+	long long i = 1;
+	long long *currentparam;
+	bool flag = false;
+	currentparam = CreateModParams(Basis, i);
+	for (long long j = 0; j < n; j++) {
+		if (currentparam[j] != ModParam2[j]) {
+			flag = true;
+		}
+	}
+	delete[] currentparam;
+	if (flag) {
+		flag = false;
+		while (!flag)
+		{
+			flag = true;
+			i++;
+			B = new long long[n];
+			Add1(A, ModParam1, Basis, B);
+			delete[] A;
+			A = B;
+			currentparam = CreateModParams(Basis, i);
+			for (long long j = 0; j < n; j++) {
+				if (currentparam[j] != ModParam2[j]) {
+					flag = false;
+				}
+			}
+			delete[] currentparam;
+		}
+	}
+	if (flagdelete == true) {
+		delete[] ModParam1;
+		delete[] ModParam2;
+	}
+	if (num == 1) {
+		xaF = A;
+	}
+	if (num == 2) {
+		xbF = A;
+	}
+	return A;
+}
+long long* Fact(long long *ModParam1, long long *Basis, long long num) {
+	long long n = _msize(Basis) / sizeof(long long);
+	long long *A = new long long[n];//результат умножения
+
+	for (long long i = 0; i < n; i++) {
+		A[i] = 1;
+	}
+	long long i = 1;
+	long long *currentparam = NULL;
+	bool flag = false;
+	while (!flag)
+	{
+		flag = true;
+		currentparam = CreateModParams(Basis, i);
+		for (long long j = 0; j < n; j++) {
+			if (currentparam[j] != ModParam1[j]) {
+				flag = false;
+			}
+		}
+
+		A = Multy(A, currentparam, Basis, true, 0);
+		i++;
+		//delete[] A;
+		//A = B;
+	}
+	if (num == 1) {
+		xaF = A;
+	}
+	if (num == 2) {
+		xbF = A;
+	}
+
+	return A;
+}
+
+long long* Fact1(long long *ModParam1, long long *Basis, long long num) {
+	long long n = _msize(Basis) / sizeof(long long);
+	long long *A = new long long[n];//результат умножения
+
+	for (long long i = 0; i < n; i++) {
+		A[i] = 1;
+	}
+	long long i = 1;
+	long long *currentparam = NULL;
+	bool flag = false;
+	while (!flag)
+	{
+		flag = true;
+		currentparam = CreateModParams(Basis, i);
+		for (long long j = 0; j < n; j++) {
+			if (currentparam[j] != ModParam1[j]) {
+				flag = false;
+			}
+		}
+
+		A = Multy1(A, currentparam, Basis, true, 0);
+		i++;
+		//delete[] A;
+		//A = B;
+	}
+	if (num == 1) {
+		xaF = A;
+	}
+	if (num == 2) {
+		xbF = A;
+	}
+
+	return A;
+}
+
+
+//long long* F(long long *ModParam1, long long *ModParam2, long long *Basis) {//Усложнить функцию
+//	clock_t startT = clock();
+//	long long n = _msize(Basis) / sizeof(long long);
+//	
+//	double start_time = clock();
+//	//long long *aF = Fact(ModParam1, Basis);
+//	long long *aF = new long long[n];
+//	//Fact(ModParam1, Basis, std::cref(aF));
+//	thread fact0(Fact, ModParam1, Basis, 1);
+//	
+//	long long *bF = new long long[n];
+//	Fact(ModParam2, Basis, 2);
+//	for (long long i = 0;i < n;i++) {
+//		bF[i] = xbF[i];
+//	}
+//	fact0.join();
+//	for (long long i = 0;i < n;i++) {
+//		aF[i] = xaF[i];
+//	}
+//	long long *Result = new long long[n];//result = a!
+//	for (long long i = 0;i < n;i++) {
+//		Result[i] = aF[i];
+//	}
+//	long long *B = new long long[n];
+//
+//	
+//	Add(Result, bF, Basis,B);//a!+b!
+//	delete[] Result;
+//	Result = B;
+//
+//	long long *Umnozh = Multy(aF, bF, Basis, false, 0);//a!*b!
+//
+//	B = new long long[n];
+//	Add(Result, Umnozh, Basis, B);//a! + b! + a!*b!
+//	delete[] Result;
+//	Result = B;
+//	delete[] Umnozh;
+//	thread multaa(Multy, aF, aF, Basis, false, 1);
+//	//Umnozh = Multy(aF, aF, Basis, false,true);//a!*a!
+//	Umnozh = Multy( bF, bF, Basis, false,0);
+//	B = new long long[n];
+//	Add(Result, Umnozh, Basis, B);//a! + b! + a!*b! + b!*b!
+//	delete[] Result;
+//	Result = B;
+//	delete[] Umnozh;
+//
+//	B = new long long[n];
+//	multaa.join();
+//	Add(Result, xaF, Basis, B);//a! + b! + a!*b! + a!*a! + b!*b!
+//	delete[] Result;
+//	Result = B;	
+//	delete[] aF;
+//	delete[] bF;
+//	clock_t endT = clock();
+//	cout <<"Время работы в СОК: "<< (double)(endT - startT) / CLOCKS_PER_SEC << endl;
+//	return Result;
+//}
+long long* F(long long *ModParam1, long long *ModParam2, long long *Basis) {//Усложнить функцию
+	clock_t startT = clock();
+	long long n = _msize(Basis) / sizeof(long long);
+
+	double start_time = clock();
+	long long *aF = Fact(ModParam1, Basis, 0);
+	long long *bF = Fact(ModParam2, Basis, 0);
+	long long *Result = new long long[n];//result = a!
+	for (long long i = 0;i < n;i++) {
+		Result[i] = aF[i];
+	}
+	long long *B = new long long[n];
+	Add(Result, bF, Basis, B);//a!+b!
+	delete[] Result;
+	Result = B;
+
+	long long *Umnozh = Multy(aF, bF, Basis, false, 0);//a!*b!
+
+	B = new long long[n];
+	Add(Result, Umnozh, Basis, B);//a! + b! + a!*b!
+	delete[] Result;
+	Result = B;
+	delete[] Umnozh;
+
+	Umnozh = Multy(aF, aF, Basis, false, 0);//a!*a!
+
+	B = new long long[n];
+	Add(Result, Umnozh, Basis, B);//a! + b! + a!*b! + a!*a!
+	delete[] Result;
+	Result = B;
+	delete[] Umnozh;
+
+	Umnozh = Multy(bF, bF, Basis, false, 0);//b!*b!
+
+	B = new long long[n];
+	Add(Result, Umnozh, Basis, B);//a! + b! + a!*b! + a!*a! + b!*b!
+	delete[] Result;
+	Result = B;
+	delete[] Umnozh;
+
+	delete[] aF;
+	delete[] bF;
+	clock_t endT = clock();
+	cout << "Время работы в СОК: " << (double)(endT - startT) / CLOCKS_PER_SEC << endl;
+	return Result;
+}
+
+long long* F1(long long *ModParam1, long long *ModParam2, long long *Basis) {//Усложнить функцию
+	clock_t startT = clock();
+	long long n = _msize(Basis) / sizeof(long long);
+
+	double start_time = clock();
+	long long *aF = Fact1(ModParam1, Basis, 0);
+	long long *bF = Fact1(ModParam2, Basis, 0);
+	long long *Result = new long long[n];//result = a!
+	for (long long i = 0;i < n;i++) {
+		Result[i] = aF[i];
+	}
+	long long *B = new long long[n];
+	Add1(Result, bF, Basis, B);//a!+b!
+	delete[] Result;
+	Result = B;
+
+	long long *Umnozh = Multy1(aF, bF, Basis, false, 0);//a!*b!
+
+	B = new long long[n];
+	Add1(Result, Umnozh, Basis, B);//a! + b! + a!*b!
+	delete[] Result;
+	Result = B;
+	delete[] Umnozh;
+
+	Umnozh = Multy1(aF, aF, Basis, false, 0);//a!*a!
+
+	B = new long long[n];
+	Add1(Result, Umnozh, Basis, B);//a! + b! + a!*b! + a!*a!
+	delete[] Result;
+	Result = B;
+	delete[] Umnozh;
+
+	Umnozh = Multy1(bF, bF, Basis, false, 0);//b!*b!
+
+	B = new long long[n];
+	Add1(Result, Umnozh, Basis, B);//a! + b! + a!*b! + a!*a! + b!*b!
+	delete[] Result;
+	Result = B;
+	delete[] Umnozh;
+
+	delete[] aF;
+	delete[] bF;
+	clock_t endT = clock();
+	cout << "Время работы в СОК параллельно: " << (double)(endT - startT) / CLOCKS_PER_SEC << endl;
+	return Result;
+}
+
+
+bool CheckCommon(long long num) {
+	for (long long i = 2; i <= sqrt(num); i++) {
+		if (num % i == 0) {
+			// вывести, что n  не простое, так как делится на i
+			return false;
+		}
+	}
+	// вывесьт что n простое.
+	return true;
+}
 int main()
-{	//РІРѕР·РјРѕР¶РЅРѕ РїРµСЂРµРІРµС‚СЃРё РІСЃРµ РІ double,РЅРѕ С‚РѕРіРґР° РєР°Рє СЃРѕР·РґР°РІР°С‚СЊ С‚Р°Р±Р»РёС†Сѓ С‚СЂР°РЅСЃР»СЏР№С†РёР№
+{	//возможно переветси все в double,но тогда как создавать таблицу трансляйций
 	setlocale(LC_ALL, "rus");
 	SetConsoleCP(1251); SetConsoleOutputCP(1251);
 	bool EndApp = false;
-	int choise;
+	long long choise;
 
 	double MaxNums = 0;
-	int *Basis = NULL, *testBas;
-	int Num1 = NULL, Num2 = NULL;//РµСЃР»Рё СЃРґРµР»Р°С‚СЊ double,С‚Рѕ РѕСЃС‚Р°С‚РѕРє РѕС‚ РґРµР»РµРЅРёСЏ РїСЂРёРґРµС‚СЃСЏ РёСЃРєР°С‚СЊ С†РёРєР»РѕРј
-								//Р·Р°РјРµРЅРёС‚СЊ DInsert Рё РїР°СЂР°РјРµС‚СЂС‹ РІ CMp Рё Create
-	//int **TableAllowNums = NULL;
-	int *ModParam1 = NULL;
-	int *ModParam2 = NULL;
-	std::cout << "Р’С‹Р±РµСЂРёС‚Рµ РґРµР№СЃС‚РІРёРµ" << endl;
+	long long *Basis = NULL, *testBas;
+	long long *Res;
+	long long Num1 = NULL, Num2 = NULL;//если сделать double,то остаток от деления придется искать циклом
+									   //заменить DInsert и параметры в CMp и Create
+									   //long long **TableAllowNums = NULL;
+	long long *ModParam1 = NULL;
+	long long *ModParam2 = NULL;
+	string str0;
+	long long j;
+	ifstream fin("cppstudio.txt"); // открыли файл для чтения
+	string a = "kek";
+	std::cout << "Выберите действие" << endl;
 
 	while (EndApp == false)
 	{
-		cout << "1 - Р·Р°РґР°С‚СЊ Р±Р°Р·РёСЃ" << endl;
-		cout << "2 - РІРІРµСЃС‚Рё РїР°СЂР°РјРµС‚СЂС‹" << endl;
-		cout << "3 - РІС‹С‡РёСЃР»РёС‚СЊ" << endl;
-		cout << "4 - РІС‹С…РѕРґ" << endl;
-		//cout << "5 - РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊ РґРµС„РѕР»С‚" << endl; todo
-		choise = IInsert(4);
+		cout << "1 - задать базис" << endl;
+		cout << "2 - ввести параметры" << endl;
+		cout << "3 - вычислить" << endl;
+		cout << "4 - выход" << endl;
+		//cout << "5 - использовать дефолт" << endl; todo
+		choise = IInsert(6);
 		switch (choise)
 		{
-		case 1: 
+		case 1:
 
 			testBas = ReadBas();
 			if (testBas != NULL) {
-				Basis = testBas;//РїСЂРІРѕРµСЂРёС‚СЊ С‡С‚Рѕ РїРµСЂРµРґР°С‡Р° РїСЂРѕРёСЃС…РѕРґРёС‚ РїРѕ Р·РЅР°С‡РµРЅРёСЋ
-				cout << "Р‘Р°Р·РёСЃ СѓСЃРїРµС€РЅРѕ Р·Р°РґР°РЅ" << endl;
+				Basis = testBas;//првоерить что передача происходит по значению
+				cout << "Базис успешно задан" << endl;
 				ShowBasis(Basis);
 				CmpParamsBasis(Basis, Num1, Num2);
-				//С‚Р°Р±Р»РёС†Р° С‚СЂР°РЅСЃР»СЏС†РёР№ РЅРµ РёРјРµРµС‚ СЃРјС‹СЃР»Р° СЃ РїР°СЂР°РјРµС‚СЂР°РјРё С‚РёРїР° double
-				//TableAllowNums = CreateTranslateTable(TableAllowNums, Basis);//РІРѕР·РјРѕР¶РЅРѕ СЃС‚РѕРёС‚ РїРѕСЃС‚Р°РІРёС‚СЊ РїР°СЂР°РјРµС‚СЂ out, РЅРѕ СЌС‚Рѕ РЅРµ С‚РѕС‡РЅРѕ
 			}
 			else {
-				cout << "Р‘Р°Р·РёСЃ РЅРµ РёР·РјРµРЅС‘РЅ"<<endl;
+				cout << "Базис не изменён" << endl;
 				ShowBasis(Basis);
 			}
 			break;
-		case 2: 
-			cout << "Р’РІРµРґРёС‚Рµ РїРµСЂРІС‹Р№ РїР°СЂР°РјРµС‚СЂ: ";
+		case 2:
+			cout << "Введите первый параметр: ";
 			Num1 = IInsert();
-			cout << "Р’РІРµРґРёС‚Рµ РІС‚РѕСЂРѕР№ РїР°СЂР°РјРµС‚СЂ: ";
+			cout << "Введите второй параметр: ";
 			Num2 = IInsert();
 			if (Basis != NULL) {
-				ShowBasis(Basis);
+				//ShowBasis(Basis);
 				if (CmpParamsBasis(Basis, Num1, Num2)) {
-					ModParam1 = CreateModParams(Basis, Num1);//СѓРїСЂР°РІР»РµРЅРёРµ РїР°РјСЏС‚СЊСЋ
+					ModParam1 = CreateModParams(Basis, Num1);//управление памятью
 					ModParam2 = CreateModParams(Basis, Num2);
 				}
 			}
@@ -417,25 +916,44 @@ int main()
 			if (Basis != NULL) {
 				if (Num1 != NULL) {
 					if (CmpParamsBasis(Basis, Num1, Num2)) {
-						Retranslate(Basis, F(ModParam1, ModParam2, Basis));
+						//F(ModParam1, ModParam2, Basis);
+						//Retranslate(Basis, F(ModParam1, ModParam2, Basis), Num1, Num2);
+						F(ModParam1, ModParam2, Basis);
+						F1(ModParam1, ModParam2, Basis);
 					}
 				}
 				else {
-					cout << "РќР• СѓРєР°Р·Р°РЅС‹ РїР°СЂР°РјРµС‚СЂС‹" << endl;
+					cout << "НЕ указаны параметры" << endl;
 				}
 			}
 			else {
-				cout << "Р‘Р°Р·РёСЃ РЅРµ Р·Р°РґР°РЅ" << endl;
+				cout << "Базис не задан" << endl;
 			}
 			break;
-		case 4: 
-			EndApp = true; 
+		case 4:
+			EndApp = true;
 			break;
+		case 5:
+			Basis = new long long[1000000];
+			for (int i = 0;i < 1000000;i++) {
+				fin >> a;
+				Basis[i] = stoi(a);
+			}
+			fin.close(); // закрываем файл
+			break;
+		case 6:
+
+			RepeatFormulaLongLong(4, 3);
+
+			break;
+
+
+
 		default:
-			cout << "РџРѕРїСЂРѕР±СѓР№С‚Рµ СЃРЅРѕРІР°" << endl;
+			cout << "Попробуйте снова" << endl;
 			break;
 		}
 	}
-    return 0;
+	return 0;
 }
 
